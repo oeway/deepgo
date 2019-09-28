@@ -115,6 +115,7 @@ def get_data(sequences, prot_ids):
         prot_ids = {}
         if p.wait() == 0:
             for line in p.stdout:
+                line = line.decode('utf-8')
                 it = line.strip().split('\t')
                 if len(it) == 2:
                     prot_ids[it[1]] = int(it[0])
