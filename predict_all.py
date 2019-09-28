@@ -141,7 +141,7 @@ def predict(data, model, model_name, functions, threshold, batch_size):
     for i in range(n):
         pred = (predictions[i] >= threshold).astype('int32')
         for j in range(len(functions)):
-            if pred[j] == 1:
+            if True:#pred[j] == 1:
                 result[i].append(model_name + '_' + functions[j] + '|' + '%.2f' % predictions[i][j])
     return result
 
