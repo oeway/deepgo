@@ -351,8 +351,8 @@ def model(batch_size=128, nb_epoch=100):
     preds = model.predict_generator(
         test_generator, val_samples=len(test_data[0]))
     # incon = 0
-    # for i in xrange(len(test_data)):
-    #     for j in xrange(len(functions)):
+    # for i in range(len(test_data)):
+    #     for j in range(len(functions)):
     #         childs = set(go[functions[j]]['children']).intersection(func_set)
     #         ok = True
     #         for n_id in childs:
@@ -370,7 +370,7 @@ def model(batch_size=128, nb_epoch=100):
     # logging.info('Saving the predictions')
     # proteins = test_df['proteins']
     # predictions = list()
-    # for i in xrange(preds_max.shape[0]):
+    # for i in range(preds_max.shape[0]):
     #     predictions.append(preds_max[i])
     # df = pd.DataFrame(
     #     {
@@ -425,7 +425,7 @@ def performanc_by_interpro():
         rc = 0
         total = 0
         p_total = 0
-        for i in xrange(len(labels)):
+        for i in range(len(labels)):
             tp = np.sum(labels[i] * predictions[i])
             fp = np.sum(predictions[i]) - tp
             fn = np.sum(labels[i]) - tp
@@ -456,13 +456,13 @@ def performanc_by_interpro():
 
 def function_centric_performance(functions, preds, labels):
     preds = np.round(preds, 2)
-    for i in xrange(len(functions)):
+    for i in range(len(functions)):
         f_max = 0
         p_max = 0
         r_max = 0
         x = list()
         y = list()
-        for t in xrange(1, 100):
+        for t in range(1, 100):
             threshold = t / 100.0
             predictions = (preds[i, :] > threshold).astype(np.int32)
             tp = np.sum(predictions * labels[i, :])
@@ -483,8 +483,8 @@ def function_centric_performance(functions, preds, labels):
                 r_max = recall
         num_prots = np.sum(labels[i, :])
         roc_auc = auc(x, y)
-        print('%s %f %f %f %d %f' % (
-            functions[i], f_max, p_max, r_max, num_prots, roc_auc))
+        print(('%s %f %f %f %d %f' % (
+            functions[i], f_max, p_max, r_max, num_prots, roc_auc)))
 
 
 def compute_roc(preds, labels):
@@ -500,7 +500,7 @@ def compute_performance(preds, labels, gos):
     p_max = 0
     r_max = 0
     t_max = 0
-    for t in xrange(1, 100):
+    for t in range(1, 100):
         threshold = t / 100.0
         predictions = (preds > threshold).astype(np.int32)
         total = 0
@@ -544,7 +544,7 @@ def compute_performance(preds, labels, gos):
 def get_gos(pred):
     mdist = 1.0
     mgos = None
-    for i in xrange(len(labels_gos)):
+    for i in range(len(labels_gos)):
         labels, gos = labels_gos[i]
         dist = distance.cosine(pred, labels)
         if mdist > dist:
@@ -559,7 +559,7 @@ def compute_similarity_performance(train_df, test_df, preds):
     train_labels = train_df['labels'].values
     train_gos = train_df['gos'].values
     global labels_gos
-    labels_gos = zip(train_labels, train_gos)
+    labels_gos = list(zip(train_labels, train_gos))
     p = Pool(64)
     pred_gos = p.map(get_gos, preds)
     total = 0
